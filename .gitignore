@@ -5,6 +5,9 @@
 *.war
 *.ear
 
+# Project Files #
+target
+
 # IntelliJ Files #
 .idea
 *.iml
