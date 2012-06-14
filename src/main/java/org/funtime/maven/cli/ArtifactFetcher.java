@@ -38,10 +38,11 @@ public class ArtifactFetcher {
         final RepositorySystemSession session = newSession(repoSystem);
         final Map<String, String> keyValues = extractKeyValues(args);
         final String[] gavParts = getGavParts(getValue(GAV, keyValues));
-        final String classifier = getValue(CLASSIFIER, keyValues);
         final String extension = getValue(EXTENSION, keyValues);
         final String repoUrl = getValue(REPO_URL, keyValues);
         final String outputPath = getValue(OUTPUT, keyValues);
+
+        final String classifier = keyValues.get(CLASSIFIER);
 
         final DefaultArtifact artifact = new DefaultArtifact(gavParts[0], gavParts[1], classifier, extension, gavParts[2], null);
         final Dependency dependency = new Dependency(artifact, null);
