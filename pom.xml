@@ -82,7 +82,7 @@
                         <option>-keep public class org.funtime.maven.cli.ArtifactFetcher { public *; public static *; }</option>
                     </options>
                     <injar>${project.build.finalName}.jar</injar>
-                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <outjar>${project.build.finalName}.jar</outjar>
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
