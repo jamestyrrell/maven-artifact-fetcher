@@ -62,6 +62,44 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.4</version>
+                <executions>
+                    <execution>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>4.8</proguardVersion>
+                    <includeDependency>false</includeDependency>
+                    <obfuscate>true</obfuscate>
+                    <options>
+                        <option>-allowaccessmodification</option>
+                        <option>-keep public class org.funtime.maven.cli.ArtifactFetcher { public *; public static *; }</option>
+                    </options>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <lib>${java.home}/lib/jsse.jar</lib>
+                    </libs>
+                    <addMavenDescriptor>false</addMavenDescriptor>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard</artifactId>
+                        <version>4.8</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>1.7</version>
