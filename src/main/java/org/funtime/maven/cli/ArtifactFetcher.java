@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.repository.internal.MavenRepositorySystemSession;
 import org.apache.maven.repository.internal.MavenServiceLocator;
 import org.apache.maven.wagon.Wagon;
@@ -42,7 +43,11 @@ public class ArtifactFetcher {
         final String repoUrl = getValue(REPO_URL, keyValues);
         final String outputPath = getValue(OUTPUT, keyValues);
 
-        final String classifier = keyValues.get(CLASSIFIER);
+        String classifier = keyValues.get(CLASSIFIER);
+
+        if (StringUtils.isBlank(classifier)) {
+            classifier = null;
+        }
 
         final DefaultArtifact artifact = new DefaultArtifact(gavParts[0], gavParts[1], classifier, extension, gavParts[2], null);
         final Dependency dependency = new Dependency(artifact, null);
@@ -62,7 +67,7 @@ public class ArtifactFetcher {
         if (value == null || value.length() == 0) {
             throw new IllegalArgumentException("Please provide a non-null '" + key + "' value");
         }
-        return value;
+        return value.trim();
     }
 
     private static String[] getGavParts(final String gav) {
@@ -72,19 +77,17 @@ public class ArtifactFetcher {
             throw new IllegalStateException("Invalid GAV: '" + gav + "'");
         }
         final String[] parts = new String[3];
-        parts[0] = gav.substring(0, firstSeparator);
-        parts[1] = gav.substring(firstSeparator + 1, lastSeparator);
-        parts[2] = gav.substring(lastSeparator + 1, gav.length());
-        checkGavPart(parts[0], gav);
-        checkGavPart(parts[1], gav);
-        checkGavPart(parts[2], gav);
+        parts[0] = checkGavPart(gav.substring(0, firstSeparator), gav);
+        parts[1] = checkGavPart(gav.substring(firstSeparator + 1, lastSeparator), gav);
+        parts[2] = checkGavPart(gav.substring(lastSeparator + 1, gav.length()), gav);
         return parts;
     }
 
-    private static void checkGavPart(final String part, final String gav) {
+    private static String checkGavPart(final String part, final String gav) {
         if (part == null || part.length() == 0) {
             throw new IllegalStateException("Invalid GAV: '" + gav + "'");
         }
+        return part.trim();
     }
 
     private static Map<String, String> extractKeyValues(final String[] args) {
