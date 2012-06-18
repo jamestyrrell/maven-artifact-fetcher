@@ -20,6 +20,7 @@ import org.sonatype.aether.connector.wagon.WagonRepositoryConnectorFactory;
 import org.sonatype.aether.graph.Dependency;
 import org.sonatype.aether.repository.LocalRepository;
 import org.sonatype.aether.repository.RemoteRepository;
+import org.sonatype.aether.repository.RepositoryPolicy;
 import org.sonatype.aether.resolution.ArtifactRequest;
 import org.sonatype.aether.resolution.ArtifactResult;
 import org.sonatype.aether.spi.connector.RepositoryConnectorFactory;
@@ -52,6 +53,7 @@ public class ArtifactFetcher {
         final DefaultArtifact artifact = new DefaultArtifact(gavParts[0], gavParts[1], classifier, extension, gavParts[2], null);
         final Dependency dependency = new Dependency(artifact, null);
         final RemoteRepository central = new RemoteRepository("remote-repo", "default", repoUrl);
+        central.setPolicy(true, new RepositoryPolicy(true, RepositoryPolicy.UPDATE_POLICY_ALWAYS, RepositoryPolicy.CHECKSUM_POLICY_WARN));
 
         final ArtifactRequest artifactRequest = new ArtifactRequest(dependency.getArtifact(), Arrays.asList(central), null);
         final ArtifactResult result = repoSystem.resolveArtifact(session, artifactRequest);
