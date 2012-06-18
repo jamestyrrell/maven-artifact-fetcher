@@ -115,7 +115,7 @@ public class ArtifactFetcher {
 
     private static RepositorySystemSession newSession(RepositorySystem system) {
         MavenRepositorySystemSession session = new MavenRepositorySystemSession();
-        LocalRepository localRepo = new LocalRepository("local-repo");
+        LocalRepository localRepo = new LocalRepository("/tmp/local-repo");
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(localRepo));
         return session;
     }
